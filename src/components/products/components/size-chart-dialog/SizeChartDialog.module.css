@@ -1,0 +1,228 @@
+/* Main Dialog Styles */
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  overflow: hidden; /* Prevent background from scrolling */
+}
+
+.dialog {
+  background-color: #fff;
+  padding: 20px;
+  width: 100%;
+  max-width: 900px;
+  height: 75%;
+  overflow-y: auto; /* Enable scrolling inside the dialog */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+.dialogTitle {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #6e323b;
+  text-align: center;
+}
+
+/* Form Group and Image-Label Input Alignment */
+.formGroup {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.imageLabelWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between image and label */
+}
+
+.image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.label {
+  font-size: 16px;
+  color: #333;
+}
+
+/* Input and Unit Wrapping */
+.inputWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px; /* Space between input and unit */
+}
+
+.inputField {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.unit {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Submit Button */
+.submitButton {
+  width: 100%;
+  padding: 15px;
+  background-color: #6e323b;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.submitButton:hover {
+  background-color: #56242e;
+}
+
+/* Preview Section */
+.previewContainer {
+  width: 100%;
+  text-align: left;
+}
+
+.measurementTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.measurementTable th, .measurementTable td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.measurementTable th {
+  background-color: #f8f8f8;
+}
+
+.previewActions {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-start;
+}
+
+.editButton, .closePreviewButton {
+  padding: 15px 20px;
+  border-radius: 4px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.editButton {
+  background-color: #6e323b;
+  color: #fff;
+}
+
+.editButton:hover {
+  background-color: #56242e;
+}
+
+.closePreviewButton {
+  background-color: #000;
+  color: #fff;
+}
+
+.closePreviewButton:hover {
+  background-color: #333;
+}
+
+/* Responsive Styles for Tablet and Mobile */
+@media (max-width: 768px) {
+  .dialog {
+    width: 90%;
+    height: 90%;
+    padding: 15px;
+  }
+
+  .dialogTitle {
+    font-size: 20px;
+  }
+
+  .formGroup img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .formGroup input {
+    width: 100%;
+  }
+
+  .inputField {
+    width: 70%; /* Adjust width for input field on small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .formGroup {
+    flex-direction: column; /* Stack the image-label and input vertically */
+    align-items: flex-start;
+  }
+
+  .imageLabelWrapper {
+    display: flex;
+    flex-direction: row; /* Keep image and label on the same line */
+    gap: 5px;
+  }
+
+  .inputWrapper {
+    margin-top: 5%;
+    flex-direction: row; /* Keep input and unit on the same line */
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .inputField {
+    width: 100%; /* Full width input field on small screens */
+  }
+
+  /* Reduce button size for small screens */
+  .submitButton, .editButton, .closePreviewButton {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .formGroup img {
+    width: 50px;
+    height: 50px;
+  }
+}

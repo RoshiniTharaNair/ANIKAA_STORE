@@ -1,0 +1,78 @@
+/* Terms.css */
+
+.terms-page-container {
+  background-color: #f9f9f9; /* Light background for a clean look */
+  padding: 60px 0;
+}
+
+.content-wrapper {
+  width: 80%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.terms-heading {
+  font-family: 'Lato Bold', sans-serif;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 32px;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.text-section {
+  font-family: "Caudex", serif;
+  line-height: 1.8em;
+  text-align: left;
+  font-weight: 500;
+  margin-bottom: 40px;
+  color: #555; /* Softer text color for readability */
+}
+
+.section-title {
+  font-family: "Caudex", serif;
+  color: #7F3F98; /* Highlighted color for section titles */
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (min-width: 768px) {
+  .terms-div {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .terms-heading {
+    font-size: 36px;
+  }
+  .h1terms-heading {
+    font-size: 46px;
+  }
+}
+
+@media (max-width: 767px) {
+  .terms-div {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .terms-heading {
+    font-size: 26px;
+  }
+  .h1terms-heading {
+    font-size: 40px;
+    text-align: center;
+  }
+}

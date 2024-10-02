@@ -1,0 +1,109 @@
+.productItem {
+  position: relative;
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Caviar Dreams Bold', sans-serif;
+  transition: transform 0.3s;
+}
+
+.productItem:hover {
+  /* transform: scale(1.05); */
+}
+
+.productImage {
+  width: 100%; /* Ensure the image takes up the full width of the container */
+  height: 200px; /* Set a fixed height for all product images */
+  object-fit: cover; /* Ensure the image covers the entire container while maintaining aspect ratio */
+}
+
+.trendingLabel {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ff0000;
+  color: white;
+  padding: 5px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.productTitle {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.productPrice {
+  font-size: 14px;
+  color: #333;
+  margin-top: 5px;
+}
+
+.productDeliveryTime {
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+}
+
+.subcategoryContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.subcategoryImage {
+  width: 30px;
+  height: 30px;
+  margin: 0 5px;
+  cursor: pointer;
+  border: 4px solid transparent; /* Default border */
+  transition: border 0.3s ease;
+}
+
+.activeImage {
+  border-color: #ad5a6d; /* Red border for active image */
+}
+
+.verticalLine {
+  height: 30px;
+  width: 1.5px;
+  background-color: #4d4d4d27;
+  margin: 0 10px;
+}
+
+.tooltip {
+  position: fixed;
+  background-color: #333;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* Add media queries to adjust image size for smaller screens */
+@media (max-width: 767px) {
+  .productItem {
+    display: flex;
+    align-items: center;
+    text-align: left;
+  }
+
+  .productImage {
+    width: 30%; /* Reduce the image size to 30% of the card width */
+    margin-right: 10px;
+    height: auto; /* Allow the height to adjust based on width */
+  }
+}
+
+@media (max-width: 480px) {
+  .productImage {
+    width: 50%; /* Further reduce the image size to 25% for extra small screens */
+    height: auto; /* Ensure the height adjusts based on width */
+  }
+}

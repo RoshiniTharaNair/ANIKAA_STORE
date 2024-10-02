@@ -1,0 +1,19 @@
+.sortContainer {
+  display: flex;
+  font-family: 'Caviar Dreams Bold', sans-serif;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  .sortContainer {
+    justify-content: flex-start;
+    margin-top: 10px; /* Adjusted to ensure consistent spacing */
+  }
+}
+
+.sortSelect {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

@@ -1,0 +1,83 @@
+/* Environment.css */
+
+.environment-page-container {
+  background-color: #fff; /* Light grey background for a clean look */
+  padding: 50px 0;
+}
+
+.content-wrapper {
+  width: 80%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #ffffff;
+}
+
+.environment-heading {
+  font-family: 'Lato Bold', sans-serif;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 28px;
+  /* font-style: italic; */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 30px;
+}
+
+.text-section {
+  font-family: "Caudex", serif;
+  line-height: 1.7em;
+  text-align: left;
+  font-weight: 500;
+  margin-bottom: 40px;
+  color: #555; /* Softer text color for readability */
+}
+
+.section {
+  margin-bottom: 50px;
+}
+
+.environment-div {
+  font-family: "Caudex", serif;
+  text-align: left;
+  font-weight: 500;
+  color: #333; /* Consistent color for body text */
+  line-height: 1.6em;
+  padding: 10px 0; /* Spacing between items */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Subtle divider between sections */
+}
+
+.bold-text {
+  font-weight: bold;
+  color: #007f56; /* Green color to signify environmental focus */
+}
+
+@media (min-width: 768px) {
+  .environment-div {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .environment-div {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .environment-heading {
+    font-size: 38px;
+  }
+}
+
+@media (max-width: 767px) {
+  .environment-heading {
+    font-size: 26px;
+    text-align: center;
+
+  }
+}

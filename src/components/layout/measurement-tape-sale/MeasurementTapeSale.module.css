@@ -1,0 +1,45 @@
+.saleBanner {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.textContainer {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* Adjust gap between text and label */
+}
+
+.saleText {
+  font-size: 16px;
+  font-weight: bold;
+  color: #2c2c2c;
+}
+
+.newLabel {
+  position: relative;
+  font-size: 10px;
+  font-weight: bold;
+  color: #ff4f77; /* Pink color for SALE */
+}
+
+/* Fixed positioning for the MeasurementTapeSale component on small screens */
+@media (max-width: 769px) {
+  .measurement-tape-sale-navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #f8f8f8; /* Background color to differentiate */
+    text-align: center;
+    padding: 0.5rem 0; /* Padding for spacing */
+    border-bottom: 1px solid #ccc; /* Bottom border */
+    z-index: 1001; /* Ensure it's above other content */
+  }
+
+  .measurement-tape-sale {
+    margin-top: 2rem; /* This increases the gap in the mobile menu */
+  }
+}

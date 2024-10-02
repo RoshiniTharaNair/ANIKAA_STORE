@@ -1,0 +1,208 @@
+.carouselContainer {
+  position: relative;
+  width: 100%;
+  height: 90vh; /* 90% of the viewport height */
+  margin: auto;
+  overflow: hidden;
+}
+
+.carouselSlide {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%; /* Full height of the container */
+  text-align: center;
+  color: white;
+}
+
+.carouselSlide img,
+.carouselSlide video {
+  width: 100%;
+  height: 100%; /* Ensure the images fill the container */
+  object-fit: cover; /* Maintain aspect ratio */
+}
+
+.carouselSlide .overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px 40px;
+  border-radius: 5px;
+  text-align: center; /* Center the text */
+}
+
+.activeSlide {
+  display: block;
+}
+
+.carouselIndicators {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+}
+
+.carouselIndicator {
+  width: 10px;
+  height: 10px;
+  margin: 0 3px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.activeIndicator {
+  background: #fa3762;
+}
+
+.carouselArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: black;
+  color: #fa3762;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 15px; /* Adjusted padding for better visibility */
+  cursor: pointer;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.carouselArrowLeft {
+  left: 10px;
+}
+
+.carouselArrowRight {
+  right: 10px;
+}
+
+.font-pacifico {
+  font-family: 'Pacifico', cursive;
+}
+
+.font-lato {
+  font-family: 'Lato', sans-serif;
+}
+
+.font-caviar {
+  font-family: 'Caviar Dreams', sans-serif;
+}
+
+.font-caviar-bold {
+  font-family: 'Caviar Dreams Bold', sans-serif;
+}
+
+.font-sofia {
+  font-family: 'Sofia', sans-serif;
+}
+
+.font-lato-heavy {
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+}
+
+.exploreButton {
+  margin-top: 10px;
+  background-color: #000;
+  color: white;
+  border: 1px solid white;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-size: 1em;
+  text-transform: uppercase;
+}
+
+.fontLatoSofia {
+  font-family: 'Lato', sans-serif, 'Sofia', cursive;
+}
+
+.text1 {
+  font-size: 3.2em;
+  margin-bottom: 5px;
+}
+
+.text2 {
+  font-size: 2.7em;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .text1 {
+    font-size: 2.8em;
+  }
+  .text2 {
+    font-size: 2.4em;
+  }
+  .exploreButton {
+    font-size: 0.9em;
+    padding: 7px 12px;
+  }
+}
+
+@media (max-width: 992px) {
+  .text1 {
+    font-size: 2.5em;
+  }
+  .text2 {
+    font-size: 2.2em;
+  }
+  .exploreButton {
+    font-size: 0.85em;
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 769px) {
+  .text1 {
+    font-size: 2em;
+  }
+  .text2 {
+    font-size: 1.8em;
+  }
+  .exploreButton {
+    font-size: 0.8em;
+    padding: 5px 8px;
+  }
+  .carouselArrow {
+    padding: 4px 12px;
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 576px) {
+  .text1 {
+    font-size: 1.8em;
+  }
+  .text2 {
+    font-size: 1.5em;
+  }
+  .exploreButton {
+    font-size: 0.75em;
+    padding: 4px 7px;
+  }
+  .carouselArrow {
+    padding: 3px 10px;
+    font-size: 0.9em;
+  }
+}
+
+@media (max-width: 480px) {
+  .text1 {
+    font-size: 1.5em;
+  }
+  .text2 {
+    font-size: 1.2em;
+  }
+  .exploreButton {
+    font-size: 0.7em;
+    padding: 3px 6px;
+  }
+  .carouselArrow {
+    padding: 2px 8px;
+    font-size: 0.8em;
+  }
+}

@@ -1,0 +1,696 @@
+"use server";
+import medusaRequest from "../medusa-fetch"
+import {
+  StoreGetProductsParams,
+  StorePostCartsCartReq,
+  Product,
+  Region,
+  ProductCategory,
+  ProductCollection,
+} from "@medusajs/medusa"
+import { PricedProduct } from "@medusajs/medusa/dist/types/pricing"
+import { cache } from "react"
+import { cookies } from "next/headers"
+import { medusaClient } from "../config"
+import medusaError from "../util/medusa-error"
+import { MEDUSA_BACKEND_URL } from "../config";
+
+const getMedusaHeaders = (tags: string[] = []) => {
+  const headers = {
+    next: {
+      tags,
+    },
+  } as Record<string, any>
+
+  const token = cookies().get("_medusa_jwt")?.value
+
+  if (token) {
+    headers.authorization = `Bearer ${token}`
+  } else {
+    headers.authorization = ""
+  }
+
+  return headers
+}
+
+export async function getCustomer() {
+  const headers = getMedusaHeaders(["customer"]);
+
+  try {
+    const response = await fetch(`${MEDUSA_BACKEND_URL}/store/customers/me`, {
+      method: "GET",
+      headers: headers,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch customer data: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.customer || null;
+  } catch (error) {
+    console.error("Error fetching customer data:", error);
+    return null;
+  }
+}
+
+export async function listRegions() {
+  return medusaClient.regions
+    .list()
+    .then(({ regions }) => regions)
+    .catch((err) => {
+      console.log(err)
+      return null
+    })
+}
+
+const regionMap = new Map<string, Region>()
+
+export const getRegion = cache(async function (countryCode: string) {
+  try {
+    if (regionMap.has(countryCode)) {
+      return regionMap.get(countryCode)
+    }
+
+    const regions = await listRegions()
+
+    if (!regions) {
+      return null
+    }
+
+    regions.forEach((region) => {
+      region.countries.forEach((c) => {
+        regionMap.set(c.iso_2, region)
+      })
+    })
+
+    const region = countryCode
+      ? regionMap.get(countryCode)
+      : regionMap.get("us")
+
+    return region
+  } catch (e: any) {
+    console.log(e.toString())
+    return null
+  }
+})
+
+export async function createCart(data = {}) {
+  const headers = getMedusaHeaders(["cart"])
+
+  return medusaClient.carts
+    .create(data, headers)
+    .then(({ cart }) => cart)
+    .catch((err) => {
+      console.log(err)
+      return null
+    })
+}
+
+export async function updateCart(cartId: string, data: StorePostCartsCartReq) {
+  const headers = getMedusaHeaders(["cart"])
+
+  return medusaClient.carts
+    .update(cartId, data, headers)
+    .then(({ cart }) => cart)
+    .catch((error) => medusaError(error))
+}
+
+export async function getProductsById({
+  ids,
+  regionId,
+}: {
+  ids: string[]
+  regionId: string
+}) {
+  const headers = getMedusaHeaders(["products"])
+
+  return medusaClient.products
+    .list({ id: ids, region_id: regionId }, headers)
+    .then(({ products }) => products)
+    .catch((err) => {
+      console.log(err)
+      return null
+    })
+}
+
+export async function getCart(cartId: string) {
+  const headers = getMedusaHeaders(["cart"])
+
+  return medusaClient.carts
+    .retrieve(cartId, headers)
+    .then(({ cart }) => cart)
+    .catch((err) => {
+      console.log(err)
+      return null
+    })
+}
+
+export async function addItem({
+  cartId,
+  variantId,
+  quantity,
+}: {
+  cartId: string
+  variantId: string
+  quantity: number
+}) {
+  const headers = getMedusaHeaders(["cart"])
+
+  return medusaClient.carts.lineItems
+    .create(cartId, { variant_id: variantId, quantity }, headers)
+    .then(({ cart }) => cart)
+    .catch((err) => {
+      console.log(err)
+      return null
+    })
+}
+
+export async function updateItem({
+  cartId,
+  lineId,
+  quantity,
+}: {
+  cartId: string
+  lineId: string
+  quantity: number
+}) {
+  const headers = getMedusaHeaders(["cart"])
+
+  return medusaClient.carts.lineItems
+    .update(cartId, lineId, { quantity }, headers)
+    .then(({ cart }) => cart)
+    .catch((err) => medusaError(err))
+}
+
+export async function removeItem({
+  cartId,
+  lineId,
+}: {
+  cartId: string
+  lineId: string
+}) {
+  const headers = getMedusaHeaders(["cart"])
+
+  return medusaClient.carts.lineItems
+    .delete(cartId, lineId, headers)
+    .then(({ cart }) => cart)
+    .catch((err) => {
+      console.log(err)
+      return null
+    })
+}
+
+
+export type ProductCategoryWithChildren = Omit<
+  ProductCategory,
+  "category_children"
+> & {
+  category_children: ProductCategory[]
+}
+
+/**
+ * This file contains functions for fetching products and collections from the Medusa API or the Medusa V2 Modules,
+ * depending on the feature flag. By default, the standard Medusa API is used. To use Medusa V2 set the feature flag to true.
+ */
+
+// The MEDUSA_FF_MEDUSA_V2 flag is set in the .env file of both the storefront and the server. It is used to determine whether to use the Medusa API or the Medusa V2 Modules.
+let MEDUSA_V2_ENABLED = false
+
+if (process.env.MEDUSA_FF_MEDUSA_V2) {
+  MEDUSA_V2_ENABLED = process.env.MEDUSA_FF_MEDUSA_V2 === "true"
+}
+
+// The API_BASE_URL is set in the .env file. It is the base URL of your Next.js app.
+const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8000"
+
+/**
+ * Fetches a product by handle, using the Medusa API or the Medusa Product Module, depending on the feature flag.
+ * @param handle (string) - The handle of the product to retrieve
+ * @returns (array) - An array of products (should only be one)
+ */
+export async function getProductByHandle(
+  handle: string
+): Promise<{ products: PricedProduct[] }> {
+  if (MEDUSA_V2_ENABLED) {
+    const data = await fetch(`${API_BASE_URL}/api/products/${handle}`)
+      .then((res) => res.json())
+      .catch((err) => {
+        throw err
+      })
+
+    return data
+  }
+
+  const { products } = await medusaRequest("GET", "/products", {
+    query: {
+      handle,
+    },
+  })
+    .then((res) => res.body)
+    .catch((err) => {
+      throw err
+    })
+
+  return {
+    products,
+  }
+}
+
+export const retrievePricedProductById = cache(async function ({
+  id,
+  regionId,
+}: {
+  id: string;
+  regionId: string;
+}): Promise<PricedProduct | null> {
+  const headers = getMedusaHeaders(["products"]);
+
+  return medusaClient.products
+    .retrieve(`${id}?region_id=${regionId}`, headers)
+    .then(({ product }: { product: PricedProduct }) => product) // explicitly type 'product'
+    .catch((err: unknown) => {
+      console.log(err); // explicitly type 'err' as 'unknown' or 'Error'
+      return null;
+    });
+});
+
+
+// Assuming PricedProduct has a 'handle' property
+// In your `lib/data` file where `getAllProductHandles()` is defined
+
+export async function getAllProductHandles(): Promise<string[]> {
+  console.log("Fetching all product handles...");
+  let response;
+  try {
+    if (MEDUSA_V2_ENABLED) {
+      response = await fetch(`${API_BASE_URL}/api/products`).then(res => res.json());
+    } else {
+      response = await medusaRequest("GET", "/products").then(res => res.body);
+    }
+
+    const handles = response.products.map((product: PricedProduct) => product.handle);
+    console.log("Handles fetched:", handles);
+    return handles;
+  } catch (err) {
+    console.error("Error fetching product handles:", err);
+    throw err;
+  }
+}
+
+
+
+/**
+ * Fetches a list of products, using the Medusa API or the Medusa Product Module, depending on the feature flag.
+ * @param pageParam (number) - The offset of the products to retrieve
+ * @param queryParams (object) - The query parameters to pass to the API
+ * @returns 'response' (object) - An object containing the products and the next page offset
+ * @returns 'nextPage' (number) - The offset of the next page of products
+ */
+export async function getProductsList({
+  pageParam = 0,
+  queryParams,
+}: {
+  pageParam?: number
+  queryParams: StoreGetProductsParams
+}): Promise<{
+  response: { products: PricedProduct[]; count: number }
+  nextPage: number
+}> {
+  const limit = queryParams.limit || 12
+
+  if (MEDUSA_V2_ENABLED) {
+    const params = new URLSearchParams(queryParams as Record<string, string>)
+
+    const { products, count, nextPage } = await fetch(
+      `${API_BASE_URL}/api/products?limit=${limit}&offset=${pageParam}&${params.toString()}`,
+      {
+        next: {
+          tags: ["products"],
+        },
+      }
+    ).then((res) => res.json())
+
+    return {
+      response: { products, count },
+      nextPage,
+    }
+  }
+
+  const { products, count, nextPage } = await medusaRequest(
+    "GET",
+    "/products",
+    {
+      query: {
+        limit,
+        offset: pageParam,
+        ...queryParams,
+      },
+    }
+  )
+    .then((res) => res.body)
+    .catch((err) => {
+      throw err
+    })
+
+  return {
+    response: { products, count },
+    nextPage,
+  }
+}
+
+/**
+ * Fetches a list of collections, using the Medusa API or the Medusa Product Module, depending on the feature flag.
+ * @param offset (number) - The offset of the collections to retrieve (default: 0
+ * @returns collections (array) - An array of collections
+ * @returns count (number) - The total number of collections
+ */
+export async function getCollectionsList(
+  offset: number = 0,
+  limit: number = 100
+): Promise<{ collections: ProductCollection[]; count: number }> {
+  if (MEDUSA_V2_ENABLED) {
+    const { collections, count } = await fetch(
+      `${API_BASE_URL}/api/collections?offset=${offset}&limit=${limit}`,
+      {
+        next: {
+          tags: ["collections"],
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        throw err
+      })
+
+    return {
+      collections,
+      count,
+    }
+  }
+
+  const { collections, count } = await medusaRequest("GET", "/collections", {
+    query: {
+      offset,
+      limit,
+    },
+  })
+    .then((res) => res.body)
+    .catch((err) => {
+      throw err
+    })
+
+  return {
+    collections,
+    count,
+  }
+}
+
+/**
+ * Fetches a collection by handle, using the Medusa API or the Medusa Product Module, depending on the feature flag.
+ * @param handle  (string) - The handle of the collection to retrieve
+ * @returns collections (array) - An array of collections (should only be one)
+ * @returns response (object) - An object containing the products and the number of products in the collection
+ * @returns nextPage (number) - The offset of the next page of products
+ */
+export async function getCollectionByHandle(handle: string): Promise<{
+  collections: ProductCollection[]
+  response: { products: Product[]; count: number }
+  nextPage: number
+}> {
+  if (MEDUSA_V2_ENABLED) {
+    const data = await fetch(`${API_BASE_URL}/api/collections/${handle}`)
+      .then((res) => res.json())
+      .catch((err) => {
+        throw err
+      })
+
+    return data
+  }
+
+  const data = await medusaRequest("GET", "/collections", {
+    query: {
+      handle: [handle],
+    },
+  })
+    .then((res) => res.body)
+    .catch((err) => {
+      throw err
+    })
+
+  return data
+}
+
+/**
+ * Fetches a list of products in a collection, using the Medusa API or the Medusa Product Module, depending on the feature flag.
+ * @param pageParam (number) - The offset of the products to retrieve
+ * @param handle (string) - The handle of the collection to retrieve
+ * @param cartId (string) - The ID of the cart
+ * @returns response (object) - An object containing the products and the number of products in the collection
+ * @returns nextPage (number) - The offset of the next page of products
+ */
+export async function getProductsByCollectionHandle({
+  pageParam = 0,
+  limit = 100,
+  handle,
+  cartId,
+  currencyCode,
+}: {
+  pageParam?: number
+  handle: string
+  limit?: number
+  cartId?: string
+  currencyCode?: string
+}): Promise<{
+  response: { products: PricedProduct[]; count: number }
+  nextPage: number
+}> {
+  if (MEDUSA_V2_ENABLED) {
+    const { response, nextPage } = await fetch(
+      `${API_BASE_URL}/api/collections/${handle}?currency_code=${currencyCode}&page=${pageParam.toString()}&limit=${limit}`
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        throw err
+      })
+
+    return {
+      response,
+      nextPage,
+    }
+  }
+
+  const { id } = await getCollectionByHandle(handle).then(
+    (res) => res.collections[0]
+  )
+
+  const { response, nextPage } = await getProductsList({
+    pageParam,
+    queryParams: { collection_id: [id], cart_id: cartId, limit },
+  })
+    .then((res) => res)
+    .catch((err) => {
+      throw err
+    })
+
+  return {
+    response,
+    nextPage,
+  }
+}
+
+/**
+ * Fetches a list of categories, using the Medusa API or the Medusa Product Module, depending on the feature flag.
+ * @param offset (number) - The offset of the categories to retrieve (default: 0
+ * @param limit (number) - The limit of the categories to retrieve (default: 100)
+ * @returns product_categories (array) - An array of product_categories
+ * @returns count (number) - The total number of categories
+ * @returns nextPage (number) - The offset of the next page of categories
+ */
+export async function getCategoriesList(
+  offset: number = 0,
+  limit?: number
+): Promise<{
+  product_categories: ProductCategoryWithChildren[]
+  count: number
+}> {
+  if (MEDUSA_V2_ENABLED) {
+    const { product_categories, count } = await fetch(
+      `${API_BASE_URL}/api/categories?offset=${offset}&limit=${limit}`,
+      {
+        next: {
+          tags: ["categories"],
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        throw err
+      })
+
+    return {
+      product_categories,
+      count,
+    }
+  }
+
+  const { product_categories, count } = await medusaRequest(
+    "GET",
+    "/product-categories",
+    {
+      query: {
+        offset,
+        limit,
+      },
+    }
+  )
+    .then((res) => res.body)
+    .catch((err) => {
+      throw err
+    })
+
+  return {
+    product_categories,
+    count,
+  }
+}
+
+/**
+ * Fetches a category by handle, using the Medusa API or the Medusa Product Module, depending on the feature flag.
+ * @param categoryHandle  (string) - The handle of the category to retrieve
+ * @returns collections (array) - An array of categories (should only be one)
+ * @returns response (object) - An object containing the products and the number of products in the category
+ * @returns nextPage (number) - The offset of the next page of products
+ */
+export async function getCategoryByHandle(categoryHandle: string[]): Promise<{
+  product_categories: ProductCategoryWithChildren[]
+}> {
+  if (MEDUSA_V2_ENABLED) {
+    const data = await fetch(
+      `${API_BASE_URL}/api/categories/${categoryHandle}`,
+      {
+        next: {
+          tags: ["categories"],
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        throw err
+      })
+
+    return data
+  }
+
+  const handles = categoryHandle.map((handle: string, index: number) =>
+    categoryHandle.slice(0, index + 1).join("/")
+  )
+
+  const product_categories = [] as ProductCategoryWithChildren[]
+
+  for (const handle of handles) {
+    await medusaRequest("GET", "/product-categories", {
+      query: {
+        handle,
+      },
+    })
+      .then(({ body }) => {
+        product_categories.push(body.product_categories[0])
+      })
+      .catch((err) => {
+        throw err
+      })
+  }
+
+  return {
+    product_categories,
+  }
+}
+
+/**
+ * Fetches a list of products in a collection, using the Medusa API or the Medusa Product Module, depending on the feature flag.
+ * @param pageParam (number) - The offset of the products to retrieve
+ * @param handle (string) - The handle of the collection to retrieve
+ * @param cartId (string) - The ID of the cart
+ * @returns response (object) - An object containing the products and the number of products in the collection
+ * @returns nextPage (number) - The offset of the next page of products
+ */
+export async function getProductsByCategoryHandle({
+  pageParam = 0,
+  handle,
+  cartId,
+  currencyCode,
+}: {
+  pageParam?: number
+  handle: string
+  cartId?: string
+  currencyCode?: string
+}): Promise<{
+  response: { products: PricedProduct[]; count: number }
+  nextPage: number
+}> {
+  if (MEDUSA_V2_ENABLED) {
+    const { response, nextPage } = await fetch(
+      `${API_BASE_URL}/api/categories/${handle}?currency_code=${currencyCode}&page=${pageParam.toString()}`,
+      {
+        next: {
+          tags: ["categories"],
+        },
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        throw err
+      })
+
+    return {
+      response,
+      nextPage,
+    }
+  }
+
+  const { id } = await getCategoryByHandle([handle]).then(
+    (res) => res.product_categories[0]
+  )
+
+  const { response, nextPage } = await getProductsList({
+    pageParam,
+    queryParams: { category_id: [id], cart_id: cartId },
+  })
+    .then((res) => res)
+    .catch((err) => {
+      throw err
+    })
+
+  return {
+    response,
+    nextPage,
+  }
+}
+
+export async function getHomepageProducts({
+  collectionHandles,
+  currencyCode,
+}: {
+  collectionHandles?: string[]
+  currencyCode: string
+}) {
+  const collectionProductsMap = new Map<string, PricedProduct[]>()
+
+  const { collections } = await getCollectionsList(0, 3)
+
+  if (!collectionHandles) {
+    collectionHandles = collections.map((collection) => collection.handle)
+  }
+
+  for (const handle of collectionHandles) {
+    const products = await getProductsByCollectionHandle({
+      handle,
+      currencyCode,
+      limit: 3,
+    })
+    collectionProductsMap.set(handle, products.response.products)
+  }
+
+  return collectionProductsMap
+}

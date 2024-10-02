@@ -1,0 +1,24 @@
+/* Styling for the shopping cart icon */
+.shopping-cart-icon {
+    /* font-size: 24px; */
+    position: relative;
+  }
+  
+  /* Badge to display the totalItems */
+  .cart-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #FF4136; /* Red background for the badge */
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    position: absolute;
+    top: -3px;  /* Position to the top-right corner */
+    right: -10px; /* Position to the right */
+  }
+  

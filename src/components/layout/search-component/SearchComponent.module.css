@@ -1,0 +1,119 @@
+.noScroll {
+  overflow: hidden;
+}
+
+.searchContainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-color: white;
+  color: black;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.searchHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  color: black;
+}
+
+.searchResults {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1rem 0;
+  overflow-y: auto;
+}
+
+.productItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.productItem:hover {
+  transform: scale(1.05);
+}
+
+.productImage {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.productTitle {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.productPrice {
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .searchContainer {
+    width: 100%;
+  }
+
+  .searchResults {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .closeButton {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .searchResults {
+    grid-template-columns: 1fr;
+  }
+
+  .searchInput {
+    font-size: 0.9rem;
+  }
+
+  .productTitle {
+    font-size: 0.9rem;
+  }
+
+  .productPrice {
+    font-size: 0.8rem;
+  }
+
+  .closeButton {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,67 @@
+/* WishlistDropdown.css */
+
+.wishlist-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 8px;
+  }
+  .wishlist-item .thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+  .wishlist-item .title {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .wishlist-item .delete-button {
+    display: flex;
+    align-items: center;
+    color: #6B7280;
+  }
+  .relative {
+    position: relative;
+  }
+  /* .avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid black; 
+    padding: 0; 
+    position: absolute;
+    right: -10px; 
+    top: 50%; 
+    transform: translate(50%, -50%); 
+    font-size: 11px;
+    font-weight: 500;
+    width: 16px; 
+    height: 16px; 
+    text-align: center;
+    line-height: 20px;
+  }
+   */
+  
+   .avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #FF4136; /* Red background for the badge */
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    position: absolute;
+    top: -5px;  /* Position to the top-right corner */
+    right: -10px; /* Position to the right */
+  }
+  
