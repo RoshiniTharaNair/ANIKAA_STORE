@@ -1,0 +1,139 @@
+.hero-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.fullscreen-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  z-index: 1;
+}
+
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  z-index: 2; /* Ensure it's above the overlay */
+}
+
+.banner-text h1,
+.banner-text h2 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  margin: 0;
+}
+
+.banner-text p {
+  font-style: italic;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  margin-top: 0.5rem;
+}
+
+.scroll-button {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  cursor: pointer;
+  font-family: 'Caviar Dreams Bold', sans-serif;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  margin-top: 1.5rem;
+}
+
+.scroll-button:hover {
+  background-color: #ee0a67;
+}
+
+/* Large Screen Adjustments */
+@media (min-width: 1200px) {
+  .banner-text h1 {
+    font-size: 3.8rem;
+    font-weight: bolder;
+  }
+  .banner-text p {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+  .scroll-button {
+    font-size: 1.2rem;
+    padding: 0.7rem 1.5rem;
+  }
+}
+
+/* Medium Screen Adjustments */
+@media (max-width: 1024px) {
+  .banner-text h1 {
+    font-size: 3rem;
+  }
+  .banner-text p {
+    font-size: 1.5rem;
+  }
+  .scroll-button {
+    font-size: 1.1rem;
+    padding: 0.6rem 1.4rem;
+  }
+}
+
+/* Small Screen Adjustments */
+@media (max-width: 768px) {
+  .banner-text h1 {
+    font-size: 2.5rem;
+  }
+  .banner-text p {
+    font-size: 1.2rem;
+  }
+  .scroll-button {
+    font-size: 1rem;
+    padding: 0.5rem 1.2rem;
+  }
+}
+
+/* Extra Small Screen Adjustments */
+@media (max-width: 480px) {
+  .banner-text h1 {
+    font-size: 1.8rem;
+  }
+  .banner-text p {
+    font-size: 1rem;
+  }
+  .scroll-button {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .banner-text h1 {
+    font-size: 1.5rem;
+  }
+  .banner-text p {
+    font-size: 0.8rem;
+  }
+  .scroll-button {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+}

@@ -1,0 +1,27 @@
+/* components/SpecialNavbar.module.css */
+.specialNavbar {
+    position: fixed;
+    top: 50px; /* Adjust to be below the main navbar */
+    width: 100%;
+    font-family: 'Caviar Dreams Bold', sans-serif;
+    background-color: #ff4f77; /* Pink background */
+    color: white;
+    text-align: center;
+    padding: 0.5rem 0;
+    z-index: 1001; /* Ensure it is above other content but below the main navbar */
+    display: none; /* Initially hidden */
+  }
+  
+  .message {
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: white;
+  }
+  
+  /* Display the special navbar only on small screens when scrolled */
+  @media (max-width: 768px) {
+    .specialNavbar {
+      display: block;
+    }
+  }
+  

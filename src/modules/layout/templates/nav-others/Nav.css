@@ -1,0 +1,13 @@
+.logo-image {
+    width: 150px; /* Default width for larger screens */
+    height: 50px; /* Default height for larger screens */
+    object-fit: contain; /* Maintain the aspect ratio without distortion */
+  }
+  
+  @media (max-width: 400px) {
+    .logo-image {
+      width: 100px; /* Adjust width for mobile screens */
+      height: 30px; /* Adjust height for mobile screens */
+    }
+  }
+  

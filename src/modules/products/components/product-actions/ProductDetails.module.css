@@ -1,0 +1,410 @@
+.productDetails {
+  display: flex;
+  margin-bottom: 40px;
+  background-color: #fff; /* White background for elegance */
+  border-radius: 8px;
+  font-family: 'Caudex', serif;
+  padding: 30px; /* Increased padding for more space inside the container */
+}
+
+.productImage {
+  flex: 1;
+  margin-right: 30px; /* Increased margin between image and product info */
+}
+
+.productImage img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid #e88b9a; /* Subtle border using theme color */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+.productInfo {
+  flex: 2;
+  color: #0b0b0b; /* Dark grey for primary text */
+}
+
+.productInfo h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: #000; /* Black for product title */
+  font-weight: 700; /* Bold for emphasis */
+}
+
+.productInfo p {
+  font-size: 18px;
+  margin-bottom: 10px; /* Reduced space between price and delivery info */
+  color: #020202; /* Medium grey for price and delivery info */
+}
+
+.productType, .productColor, .productSize {
+  margin-bottom: 30px; /* Increased space between product attributes */
+}
+
+.types, .colors, .sizes {
+  display: flex;
+  gap: 15px; /* Increased gap between buttons */
+}
+
+.typeButton, .colorButton, .sizeButton {
+  padding: 12px 25px; /* Increased padding inside the buttons */
+  border: 2px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease, font-weight 0.3s ease;
+  border-radius: 4px; /* Rounded corners for buttons */
+  color: #333; /* Dark grey for button text */
+}
+
+.typeButton:hover, .colorButton:hover, .sizeButton:hover {
+  transform: scale(1.05);
+  font-weight: bold; /* Increase text boldness */
+  border-width: 3px; /* Increase border thickness */
+  border-color: #6e323b; /* Theme color on hover */
+}
+
+.colorButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.active {
+  border-color: #6e323b; /* Active state with theme color */
+  background-color: #f8c2ce; /* Light theme color for active background */
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px; /* Increased margin for better spacing */
+  gap: 20px; /* Increased gap between action buttons */
+}
+
+.sizeChartLink {
+  margin-right: 20px;
+  color: #6e323b; /* Theme color for link */
+  text-decoration: none; /* No underline for a clean look */
+  font-weight: 500; /* Slightly bolder text */
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s ease;
+}
+
+.sizeChartLink:hover {
+  border-bottom: 2px solid #6e323b; 
+}
+
+.measurementButton {
+  padding: 12px 25px; /* Increased padding for a more substantial button */
+  background-color: #000; /* Black background for luxury */
+  color: #fff; /* White text for contrast */
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, font-weight 0.3s ease;
+}
+
+.measurementButton:hover {
+  /* transform: scale(1.05);  */
+  font-weight: bold; /* Increase text boldness */
+}
+
+.purchaseActions {
+  display: flex;
+  gap: 20px; /* Increased gap between purchase action buttons */
+  margin-bottom: 30px; /* Increased margin for better spacing */
+}
+
+/* Updated wishlistButton with cartButton's style */
+.wishlistButton {
+  padding: 15px 25px; /* Increased padding for a more substantial button */
+  cursor: pointer;
+  border: 2px solid #6e323b; /* Lighter theme button with border */
+  background-color: #fff; /* White background */
+  color: #6e323b; /* Theme color text */
+  font-size: 16px;
+  transition: transform 0.3s ease, font-weight 0.3s ease, border-width 0.3s ease;
+}
+
+.wishlistButton:hover {
+  /* transform: scale(1.05);  */
+  font-weight: bold; /* Increase text boldness */
+}
+
+/* Updated cartButton with wishlistButton's style */
+.cartButton {
+  padding: 15px 25px; /* Increased padding for a more substantial button */
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+  background-color: #6e323b; /* Dark theme button */
+  color: #fff;
+  transition: transform 0.3s ease, font-weight 0.3s ease;
+}
+
+.cartButton:hover {
+  /* transform: scale(1.05);  */
+  font-weight: bold; /* Increase text boldness */
+}
+
+.descriptionBox {
+  margin-top: 30px; /* Increased margin above the description box */
+}
+
+.descriptionInput {
+  width: 100%;
+  padding: 12px; /* Increased padding for better spacing */
+  border: 2px solid #0d0d0d; /* Theme color for border */
+  font-size: 16px;
+  height: 120px; /* Slightly increased height for more space */
+  resize: vertical;
+  background-color: #f9f9f9; /* Light background for the textarea */
+  color: #333; /* Dark grey for text */
+}
+
+.uploadButton {
+  padding: 15px 25px; /* Increased padding for a more substantial button */
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+  background-color: #6e323b; /* Dark theme button */
+  color: #fff;
+  transition: transform 0.3s ease, font-weight 0.3s ease;
+}
+
+.uploadButton:hover {
+  /* transform: scale(1.05);  */
+  font-weight: bold; /* Increase text boldness */
+}
+
+.customizeButton {
+  padding: 15px 25px; /* Increased padding for a more substantial button */
+  cursor: pointer;
+  border: 2px solid #6e323b; /* Lighter theme button with border */
+  background-color: #fff; /* White background */
+  color: #6e323b; /* Theme color text */
+  font-size: 16px;
+  transition: transform 0.3s ease, font-weight 0.3s ease, border-width 0.3s ease;
+}
+
+.customizeButton:hover {
+  /* transform: scale(1.05);  */
+  /* background: #f9f4f5; */
+  font-weight: bolder; /* Increase text boldness */
+}
+
+.orText {
+  margin: 0 10px;
+  font-size: 16px;
+  color: #333; /* Dark grey for text */
+  font-weight: bold;
+  display: inline-block;
+  vertical-align: middle; /* Align with the buttons */
+}
+
+/* Add this to your existing CSS */
+
+.imagePreviewContainer {
+  position: relative;
+  display: inline-block;
+  margin-top: 15px;
+}
+
+.imagePreview {
+  width: 100px;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid #6e323b; /* Border to match the theme */
+}
+
+.removeImageButton {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removeImageButton:hover {
+  background-color: #6e323b; /* Change color on hover */
+}
+
+.actionsWithPreview {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Adjust gap between the upload button and image preview */
+  margin-bottom: 20px;
+}
+
+.imagePreviewContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.imagePreview {
+  width: 100px;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid #6e323b; /* Border to match the theme */
+}
+
+.removeImageButton {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removeImageButton:hover {
+  background-color: #6e323b; /* Change color on hover */
+}
+
+.productDetails {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+  font-family: 'Caudex', serif;
+  padding: 30px;
+}
+
+.productImage {
+  flex: 1;
+  margin-right: 30px;
+}
+
+.productImage img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid #e88b9a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.productInfo {
+  flex: 2;
+  color: #0b0b0b;
+}
+
+.productInfo h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: #000;
+  font-weight: 700;
+}
+
+.productInfo p {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #020202;
+}
+
+.types, .colors, .sizes {
+  display: flex;
+  gap: 15px;
+}
+
+.typeButton, .colorButton, .sizeButton {
+  padding: 12px 25px;
+  border: 2px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #333;
+  transition: transform 0.3s ease, border-color 0.3s ease, font-weight 0.3s ease;
+}
+
+.colorButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .productDetails {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .productImage {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .productInfo h1 {
+    font-size: 24px;
+  }
+
+  .productInfo p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .productDetails {
+    padding: 20px;
+  }
+
+  .productInfo h1 {
+    font-size: 22px;
+  }
+
+  .productInfo p {
+    font-size: 14px;
+  }
+
+  .typeButton, .colorButton, .sizeButton {
+    padding: 10px 20px;
+  }
+
+  .colorButton {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .productDetails {
+    padding: 15px;
+  }
+
+  .productInfo h1 {
+    font-size: 20px;
+  }
+
+  .productInfo p {
+    font-size: 12px;
+  }
+
+  .typeButton, .colorButton, .sizeButton {
+    padding: 8px 15px;
+  }
+
+  .colorButton {
+    width: 25px;
+    height: 25px;
+  }
+}
