@@ -12,7 +12,7 @@ import { namePattern, cityPattern, postalCodePattern, phoneNumberPattern, emailP
 import ErrorMessage from "../error-message";
 
 // Set up Leaflet marker icon to avoid default icon issue
-delete L.Icon.Default.prototype._getIconUrl;
+// delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: "https://leafletjs.com/examples/custom-icons/leaf-red.png",
@@ -131,11 +131,12 @@ const ShippingAddress = ({
   const addressesInRegion = useMemo(
     () =>
       customer?.shipping_addresses.filter((a) =>
-        countriesInRegion?.includes(a.country_code)
-      ),
+        countriesInRegion?.includes(a.country_code ?? "") // Default to empty string if country_code is null
+  ),
     [customer?.shipping_addresses, countriesInRegion]
   );
 
+  
   useEffect(() => {
     setFormData({
       "shipping_address.first_name": cart?.shipping_address?.first_name || "",
@@ -306,47 +307,50 @@ console.log("errorMsg ",errorMsg)
 
       {/* Show Map if latitude and longitude exist, otherwise show current location */}
       {(formData["shipping_address.latitude"] && formData["shipping_address.longitude"]) || currentLocation ? (
-        <div className="mt-4 mb-4">
-          <h3 className="text-small-regular">Map Location</h3>
-          <MapContainer
-            center={
-              formData["shipping_address.latitude"] && formData["shipping_address.longitude"]
-                ? [formData["shipping_address.latitude"], formData["shipping_address.longitude"]]
-                : currentLocation
-            }
-            zoom={13}
-            style={{ height: "300px", width: "100%" }}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            {/* Marker placed at current location or saved coordinates */}
-            <Marker
-              position={
-                formData["shipping_address.latitude"] && formData["shipping_address.longitude"]
-                  ? [formData["shipping_address.latitude"], formData["shipping_address.longitude"]]
-                  : currentLocation
-              }
-            />
-            {/* Pink Marker that moves based on user clicks */}
-            <LocationMarker clickedLocation={clickedLocation} setClickedLocation={setClickedLocation} />
-          </MapContainer>
+  <div className="mt-4 mb-4">
+    <h3 className="text-small-regular">Map Location</h3>
+    <MapContainer
+      center={
+        formData["shipping_address.latitude"] && formData["shipping_address.longitude"]
+          ? [formData["shipping_address.latitude"], formData["shipping_address.longitude"]]
+          : currentLocation || [0, 0] // Fallback to a default location like [0, 0] if both are null
+      }
+      zoom={13}
+      style={{ height: "300px", width: "100%" }}
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      />
+      {/* Conditionally render the marker only if there are valid coordinates */}
+      {(formData["shipping_address.latitude"] && formData["shipping_address.longitude"]) || currentLocation ? (
+        <Marker
+          position={
+            formData["shipping_address.latitude"] && formData["shipping_address.longitude"]
+              ? [formData["shipping_address.latitude"], formData["shipping_address.longitude"]]
+              : currentLocation!
+          }
+        />
+      ) : null}
+      {/* Pink Marker that moves based on user clicks */}
+      <LocationMarker clickedLocation={clickedLocation} setClickedLocation={setClickedLocation} />
+    </MapContainer>
 
-          {/* Set Location button */}
-          <div className="mt-4">
-            <button
-              type="button"
-              className="px-4 py-2 bg-blue-500 text-white rounded"
-              onClick={handleSetLocation}
-            >
-              Set Location
-            </button>
-          </div>
-        </div>
-      ) : (
-        <p className="text-small-regular">Unable to display map: No coordinates available.</p>
-      )}
+    {/* Set Location button */}
+    <div className="mt-4">
+      <button
+        type="button"
+        className="px-4 py-2 bg-blue-500 text-white rounded"
+        onClick={handleSetLocation}
+      >
+        Set Location
+      </button>
+    </div>
+  </div>
+) : (
+  <p className="text-small-regular">Unable to display map: No coordinates available.</p>
+)}
+
 
       <div className="grid grid-cols-2 gap-4">
         <Input
